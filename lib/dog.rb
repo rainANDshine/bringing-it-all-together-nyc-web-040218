@@ -47,7 +47,7 @@ class Dog
     Dog.new(row[0], row[1], row[2])
   end
 
-  def selffind_by_id(id)
+  def self.find_by_id(id)
     sql = <<-SQL
       SELECT * FROM dogs WHERE id = ? LIMIT 1
       SQL
