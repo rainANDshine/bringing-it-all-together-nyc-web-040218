@@ -51,7 +51,7 @@ class Dog
       SQL
     self.new_from_db(DB[:conn].execute(sql, id).first)
   end
-    
+
   def self.find_by_name(name)
     sql = <<-SQL
       SELECT * FROM dogs WHERE name = ? LIMIT 1
@@ -77,7 +77,3 @@ class Dog
       SQL
     DB[:conn].execute(sql, self.name, self.grade, self.id)
   end
-
-   
-
-  
