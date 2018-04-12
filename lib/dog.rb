@@ -60,22 +60,14 @@ class Dog
   end
 
   def self.find_or_create_by(name:, breed:)
-    sql = <<-SQL
-      SELECT * FROM dogs WHERE name = ?, breed = ?
-      SQL
-    dog = DB[:conn].execute(sql, name, breed)
-
+    dog = DB[:conn].execute("SELECT * FROM dogs WHERE name = ? AND breed = ?", name, breed)
     if !dog.empty?
-      dog.first
+      dog_data = dog.first
+      dog = Dog.new_from_db(dog_data)
     else
-      sql = <<-SQL
-        INSERT INTO dogs(name, breed) VALUES (?, ?)
-        SQL
-      DB[:conn].execute(sql, name, breed)
-      dog = Dog.new(name, breed)
-      dog.id = DB[:conn].execute("SELECT last_insert_rowid() FROM dogs")[0][0]
-      dog
+      dog = Dog.create(name, breed)
     end
+    dog
   end
 
   def update
